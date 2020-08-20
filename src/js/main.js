@@ -7,11 +7,15 @@ const d3 = require("d3");
 var graphWidth = document.getElementById('graph').offsetWidth;
 var graphHeight = document.getElementById('graph').offsetHeight;
 
+var marginBottom = graphWidth > 500 ? 70 : 25;
+
 var svg = d3.select("svg"),
-        margin = {top: 20, right: 20, bottom: 30, left: 40},
+        margin = {top: 20, right: 20, bottom: marginBottom, left: 40},
         width = graphWidth - margin.left - margin.right,
         height = graphHeight - margin.top - margin.bottom,
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
 
     // The scale spacing the groups:
     var x0 = d3.scaleBand()
@@ -25,6 +29,8 @@ var svg = d3.select("svg"),
     var y = d3.scaleLinear()
         .rangeRound([height, 0]);
 
+
+
     var z = d3.scaleOrdinal()
         .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
@@ -32,22 +38,23 @@ var svg = d3.select("svg"),
         for (let i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
         return d;
     }).then(function(data) {
-        console.log(data);
 
         let keys = data.columns.slice(1);
 
-        x0.domain(data.map(function(d) { return d.scenario; }));
+        x0.domain(data.map(function(d,i) {
+          return (graphWidth > 500) ? d.scenario : i + 1;
+        }));
         x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-        y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+        y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }) + 2; })]).nice();
 
         g.append("g")
             .selectAll("g")
             .data(data)
             .enter().append("g")
             .attr("class","bar")
-            .attr("transform", function(d) { return "translate(" + x0(d.scenario) + ",0)"; })
+            .attr("transform", function(d,i) { return (graphWidth > 500) ? "translate(" + x0(d.scenario) + ",0)" : "translate(" + x0(i+ 1) + ",0)"; })
             .selectAll("rect")
-            .data(function(d) { console.log(d); return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+            .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
             .enter().append("rect")
             .attr("class", "rect")
             .attr("x", function(d) { return x1(d.key); })
@@ -56,29 +63,48 @@ var svg = d3.select("svg"),
             .attr("height", function(d) { return height - y(d.value); })
             .attr("fill", function(d) { return z(d.key); });
 
+
+      // Controls the text labels at the top of each bar. Partially repeated in the resize() function below for responsiveness.
+    	svg.selectAll("g.bar")
+        .data(data)
+        .selectAll("text")
+        .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+        .enter().append("text")
+    	  .attr("class","label")
+    	  .attr("x", (function(d) { return x1(d.key) + x1.bandwidth() / 2 ; }  ))
+    	  .attr("y", function(d) { return y(d.value) - 15; })
+    	  .attr("dy", ".75em")
+        .attr("font-size", 14)
+        .attr("text-anchor", "middle")
+    	  .text(function(d) { return d.value; });
+
+
         g.append("g")
-            .attr("class", "axis")
+            .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
+            .attr("font-size", 15)
             .call(d3.axisBottom(x0));
 
         g.append("g")
             .attr("class", "y axis")
-            .call(d3.axisLeft(y).ticks(null, "s"))
+            .call(d3.axisLeft(y).ticks(null, "s").tickFormat(d => d + "%"))
+            .attr("font-size", 14)
             .append("text")
             .attr("x", 2)
             .attr("y", y(y.ticks().pop()) + 0.5)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
+            .attr("font-size", 15)
             .attr("font-weight", "bold")
             .attr("text-anchor", "start")
-            .text("Percent infectious");
+            .text("Total infected by Dec. 1");
 
         var legend = g.append("g")
             .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
+            .attr("font-size", 13)
             .attr("text-anchor", "end")
             .selectAll("g")
-            .data(keys.slice().reverse())
+            .data(keys.slice())
             .enter().append("g")
             .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
@@ -88,14 +114,32 @@ var svg = d3.select("svg"),
             .attr("height", 15)
             .attr("fill", z)
             .attr("stroke", z)
-            .attr("stroke-width",2)
-            .on("click",function(d) { update(d) });
+            .attr("stroke-width",2);
 
         legend.append("text")
             .attr("x", width - 24)
             .attr("y", 9.5)
             .attr("dy", "0.32em")
             .text(function(d) { return d; });
+
+
+        var insertLinebreaks = function (d) {
+          var el = d3.select(this);
+          var words = d.split('|');
+          el.text('');
+
+          for (var i = 0; i < words.length; i++) {
+              var tspan = el.append('tspan').text(words[i]).attr("font-size", 14);
+              if (i > 0)
+                  tspan.attr('x', 0).attr('dy', '15').attr("font-size", 14);
+          }
+      };
+
+      if (graphWidth > 500) {
+        svg.selectAll('g.x.axis g text').each(insertLinebreaks);
+      } else {}
+
+
 
 
 
@@ -106,30 +150,32 @@ var svg = d3.select("svg"),
       document.querySelectorAll(".button").forEach(el => el.addEventListener('click', () => covidRateChange(el.dataset.sheet)) );
 
       var covidRateChange = function(chosenRate) {
-        console.log(chosenRate);
+        document.querySelectorAll(".button").forEach(el => el.classList.remove('selected'));
+        document.querySelectorAll(`.button[data-sheet="${chosenRate}"]`).forEach(el => el.classList.add('selected'));
 
         d3.csv(`../assets/${chosenRate}`, function(h, i, columns) {
             for (let i = 1, n = columns.length; i < n; ++i) h[columns[i]] = +h[columns[i]];
-            console.log(h);
             return h;
         }).then(function(currentData) {
-
-            console.log(currentData);
             let keys = currentData.columns.slice(1);
-
-            // x0.domain(currentData.map(function(d) { return d.scenario; }));
-            // x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-            // y.domain([0, d3.max(currentData, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
             svg.selectAll("g.bar")
                 .data(currentData)
                 .selectAll("rect")
-                .data(function(h) { console.log(h); return keys.map(function(key) { return {key: key, value: h[key]}; }); })
+                .data(function(h) { return keys.map(function(key) { return {key: key, value: h[key]}; }); })
                 .transition()
                 .attr("y", function(h) { return y(h.value); })
                 .attr("height", function(h) { return height - y(h.value); })
-                .attr("fill", "green")
                 .duration(500);
+
+            svg.selectAll("g.bar")
+              .data(currentData)
+              .selectAll("text")
+              .data(function(h) { return keys.map(function(key) { return {key: key, value: h[key]}; }); })
+              .transition()
+          	  .attr("y", function(h) { return y(h.value) - 15; })
+          	  .text(function(h) { return h.value; })
+              .duration(500);
 
 
         }); //end of d3 data func

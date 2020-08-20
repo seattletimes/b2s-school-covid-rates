@@ -1,0 +1,5 @@
+scenario,Teachers,Staff,Students
+All in person,9.5,9.6,6.4
+All in person|countermeasures,0.9,0.8,0.6
+All in person|countermeasures|A/B scheduling,0.6,0.6,0.4
+Elementary in person|with countermeasures|middle and high school remote,0.3,0.3,0.2

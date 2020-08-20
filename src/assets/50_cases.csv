@@ -1,5 +1,5 @@
 scenario,teachers,staff,students
-"All in person, no countermeasures",22.0,21.5,14.8
-"All in person with countermeasures",2.9,3.0,2.2
-"All in person with countermeasures, A/B scheduling",2.0,2.1,1.5
-"Elementary in person with countermeasures, middle and high school remote",1.2,1.1,0.7
+"All in person",22.0,21.5,14.8
+"All in person|countermeasures",2.9,3.0,2.2
+"All in person|countermeasures|A/B scheduling",2.0,2.1,1.5
+"Elementary in person|countermeasures|middle and high school remote",1.2,1.1,0.7

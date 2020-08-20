@@ -14,15 +14,46 @@
     <% } %>
     <responsive-child class="interactive">
       <!-- content goes here -->
+      <h3 class="graphic-hed">
+        Back to school scenarios have trade offs
+      </h3>
+      <h4 class="graphic-chatter">
+        Simulating King County, researchers were able to draw predictions about how COVID-19
+        would affect schools in various scenarios. Based on community transmission levels, and with the assumption of decreasing rates,
+        they found that not all back-to-school plans are created equal.
+        Percentages represent the number of infectious people who would have stepped into school from Sept. 1 through Dec. 1. Those who
+        who tested positive at home and kept from school are not included.
+      </h4>
+
+      <div class="stats">
+        <div>King County has a 14-day average of <span>XX cases per 100,000</span> residents as of Aug. 19, 2020</div>
+      </div>
+
       <div class="buttonContainer">
-        <div class="button" data-sheet="110_cases.csv">110 cases per 100K residents</div>
-        <div class="button" data-sheet="50_cases.csv">50 cases per 100K residents</div>
-        <div class="button" data-sheet="20_cases.csv">20 cases per 100K residents</div>
+        <div class="stat-label">Cases per 100,000 King County residents two weeks prior to the start of school</div>
+        <div class="button selected" data-sheet="110_cases.csv">110 cases</div>
+        <div class="button" data-sheet="50_cases.csv">50 cases</div>
+        <div class="button" data-sheet="20_cases.csv">20 cases</div>
       </div>
 
       <div id="graph">
         <svg></svg>
       </div>
+      <div class="mobileLabels">
+        <div><span>1</span>All in person</div>
+        <div><span>2</span>All in person with countermeasures</div>
+        <div><span>3</span>All in person with countermeasures and A/B scheduling</div>
+        <div><span>4</span>Elementary in person with countermeasures, middle and high school remote</div>
+      </div>
+      <div class="disclaimer">
+        These modeling in these scenarios are reliant on King County having an R value of
+        0.9 from two weeks before the start of classes through Dec. 1. The number of cases per 100,000 residents
+        are the 14-day average of new cases leading up to Sept. 1, 2020. Countermeasures include X, Y and Z.
+      </div>
+      <figcaption class="source-container">
+          <p class="data-source">Source: Institute for Disease Modeling, Aug. 13 report.</p>
+          <p class="art-credit">Lauren Flannery / The Seattle Times</p>
+      </figcaption>
     </responsive-child>
 
     <script src="app.js" async></script>

@@ -4,10 +4,12 @@
 require("component-responsive-frame/child");
 const d3 = require("d3");
 
+var callback = function(){
+
 var graphWidth = document.getElementById('graph').offsetWidth;
 var graphHeight = document.getElementById('graph').offsetHeight;
 
-var marginBottom = graphWidth > 500 ? 70 : 25;
+var marginBottom = graphWidth > 500 ? 75 : 25;
 
 var svg = d3.select("svg"),
         margin = {top: 20, right: 20, bottom: marginBottom, left: 40},
@@ -34,7 +36,7 @@ var svg = d3.select("svg"),
     var z = d3.scaleOrdinal()
         .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-    d3.csv("../assets/110_cases.csv", function(d, i, columns) {
+    d3.csv("assets/110_cases.csv", function(d, i, columns) {
         for (let i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
         return d;
     }).then(function(data) {
@@ -74,7 +76,6 @@ var svg = d3.select("svg"),
     	  .attr("x", (function(d) { return x1(d.key) + x1.bandwidth() / 2 ; }  ))
     	  .attr("y", function(d) { return y(d.value) - 15; })
     	  .attr("dy", ".75em")
-        .attr("font-size", 14)
         .attr("text-anchor", "middle")
     	  .text(function(d) { return d.value; });
 
@@ -83,7 +84,7 @@ var svg = d3.select("svg"),
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .attr("font-size", 15)
-            .call(d3.axisBottom(x0));
+            .call(d3.axisBottom(x0).tickSizeOuter(0));
 
         g.append("g")
             .attr("class", "y axis")
@@ -94,10 +95,10 @@ var svg = d3.select("svg"),
             .attr("y", y(y.ticks().pop()) + 0.5)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
-            .attr("font-size", 15)
+            .attr("font-size", 14)
             .attr("font-weight", "bold")
             .attr("text-anchor", "start")
-            .text("Total infected by Dec. 1");
+            .text("Total percentage infected by Dec. 1");
 
         var legend = g.append("g")
             .attr("font-family", "sans-serif")
@@ -106,7 +107,7 @@ var svg = d3.select("svg"),
             .selectAll("g")
             .data(keys.slice())
             .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 15) + ")"; });
 
         legend.append("rect")
             .attr("x", width - 17)
@@ -153,7 +154,7 @@ var svg = d3.select("svg"),
         document.querySelectorAll(".button").forEach(el => el.classList.remove('selected'));
         document.querySelectorAll(`.button[data-sheet="${chosenRate}"]`).forEach(el => el.classList.add('selected'));
 
-        d3.csv(`../assets/${chosenRate}`, function(h, i, columns) {
+        d3.csv(`assets/${chosenRate}`, function(h, i, columns) {
             for (let i = 1, n = columns.length; i < n; ++i) h[columns[i]] = +h[columns[i]];
             return h;
         }).then(function(currentData) {
@@ -182,3 +183,15 @@ var svg = d3.select("svg"),
 
 
       }; //end of covidRateChange
+
+
+}; // end of callback function
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  callback();
+} else {
+  document.addEventListener("DOMContentLoaded", callback);
+}

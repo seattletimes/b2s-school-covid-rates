@@ -1,5 +1,5 @@
 scenario,Teachers,Staff,Students
-"All in person",24.8,24.4,17.2
-"All in person|+ countermeasures",5.6,5.4,4.1
-"All in person|+ countermeasures|+ A/B scheduling",4.3,4.2,3.1
-"Elementary in person|+ countermeasures|+ middle and high remote",2.2,4.9,1.2
+Everyone returns|to school buildings|+ no safety precautions,24.8,24.4,17.2
+Everyone returns|to school buildings|+ safety precautions,5.6,5.4,4.1
+Everyone returns part-time|to school buildings|+ safety precautions,4.3,4.2,3.1
+Elementary students|return to school buildings|+ safety precautions|+ middle and high school remote,2.2,2.0,1.2

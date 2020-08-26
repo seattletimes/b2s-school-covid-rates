@@ -15,22 +15,23 @@
     <responsive-child class="interactive">
       <!-- content goes here -->
       <h3 class="graphic-hed">
-        Back to school scenarios have trade offs
+        Why youngest learners should return to school buildings first
       </h3>
       <h4 class="graphic-chatter">
-        Simulating King County, researchers were able to draw predictions about how COVID-19
-        would affect schools in various scenarios. Based on community transmission levels, and with the assumption of decreasing rates,
-        they found that not all back-to-school plans are created equal.
-        Percentages represent the number of infectious people who would have stepped into school from Sept. 1 through Dec. 1. Those who
-        who tested positive at home and kept from school are not included.
+        By simulating King County coronavirus transmission patterns, researchers drew predictions about COVID-19
+        case numbers in schools under various reopening scenarios. The analysis suggests that when community
+        transmission is under control, youngest learners should return to school buildings first, in part because
+        some research hints that these children are less susceptible to infection than their older peers. Percentages
+        represent the share of students, staff and teachers who, according to researchers' modeling, might step into school
+        buildings with active COVID-19 infections from Sept. 1 through Dec. 1.
       </h4>
 
       <div class="stats">
-        <div>King County has a 14-day average of <span>XX cases per 100,000</span> residents as of Aug. 19, 2020</div>
+        <div>King County has a 14-day average of <a href="https://coronavirus.wa.gov/what-you-need-know/covid-19-risk-assessment-dashboard" target="_blank" rel="nofollow noreferrer noopener">86.2 cases per 100,000</a> residents as of Aug. 24, 2020</div>
       </div>
 
       <div class="buttonContainer">
-        <div class="stat-label">Cases per 100,000 King County residents two weeks prior to the start of school</div>
+        <div class="stat-label">Cases per 100,000 King County residents two weeks before the start of school</div>
         <div class="button selected" data-sheet="110_cases.csv">110 cases</div>
         <div class="button" data-sheet="50_cases.csv">50 cases</div>
         <div class="button" data-sheet="20_cases.csv">20 cases</div>
@@ -40,18 +41,25 @@
         <svg></svg>
       </div>
       <div class="mobileLabels">
-        <div><span>1</span>All in person</div>
-        <div><span>2</span>All in person with countermeasures</div>
-        <div><span>3</span>All in person with countermeasures and A/B scheduling</div>
-        <div><span>4</span>Elementary in person with countermeasures, middle and high school remote</div>
+        <div><span>1</span>Everyone returns to school buildings with no safety precautions</div>
+        <div><span>2</span>Everyone returns to school buildings with safety precautions</div>
+        <div><span>3</span>Everyone returns to school buildings part-time with safety precautions</div>
+        <div><span>4</span>Elementary students return to school buildings with safety precautions, middle and high schools remain remote</div>
       </div>
+
       <div class="disclaimer">
-        These modeling in these scenarios are reliant on King County having an R value of
-        0.9 from two weeks before the start of classes through Dec. 1. The number of cases per 100,000 residents
-        are the 14-day average of new cases leading up to Sept. 1, 2020. Countermeasures include X, Y and Z.
+        Safety precautions include mask wearing,
+        hand washing and social distancing.
+      </div>
+      <br>
+      <div class="disclaimer italic">
+        This modeling assumes that King County has a reproduction value of 0.9 from two weeks before
+        the start of classes through Dec. 1, meaning the pace of the outbreak is slowing. If this value
+        is greater than 1, cases will increase exponentially. The number of cases per 100,000 residents represents
+        different 14-day averages of new cases leading up to Sept. 1, 2020.
       </div>
       <figcaption class="source-container">
-          <p class="data-source">Source: Institute for Disease Modeling, Aug. 13 report.</p>
+          <p class="data-source">Source: <a href="https://covid.idmod.org/data/Maximizing_education_while_minimizing_COVID_risk.pdf" target="_blank" rel="nofollow noreferrer noopener">Institute for Disease Modeling</a></p>
           <p class="art-credit">Lauren Flannery / The Seattle Times</p>
       </figcaption>
     </responsive-child>

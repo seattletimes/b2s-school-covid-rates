@@ -6,7 +6,7 @@
     },
     "live": {
       "bucket": "projects.seattletimes.com",
-      "path": ""
+      "path": "2020/local/covid-back-to-school-projections"
     }
   },
   "title": "",
@@ -18,5 +18,5 @@
   "sheets": [],
   "docs": [],
   "embedded": true,
-  "production": false
+  "production": true
 }
